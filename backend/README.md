@@ -1,4 +1,4 @@
-# FastAPI Project - Backend
+# Study Genius Project - Backend
 
 ## Requirements
 
