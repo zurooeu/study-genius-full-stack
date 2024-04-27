@@ -135,7 +135,3 @@ jobs:
       - name: Start the updated docker compose deployment
         if: always()
         run: docker-compose -f docker-compose-run.yml --project-name ${{ secrets.STACK_NAME_STAGING }} up -d
-
-
-
-
