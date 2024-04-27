@@ -1,6 +1,9 @@
 services:
   proxy:
     image: nginx:latest
+    networks:
+      - npm-nw
+      - default
     volumes:
       - ./nginx/certs/:/etc/nginx/ssl
       - ./nginx/conf/:/etc/nginx/conf.d
