@@ -13,6 +13,9 @@ jobs:
   setup:
     outputs:
       branch: ${{ GITHUB.REF.NAME }}
+    steps:
+      - id: set-variable
+        run: echo "my-variable=my-value" >> $GITHUB_OUTPUT
   use-variable:
     needs: setup
     steps:
