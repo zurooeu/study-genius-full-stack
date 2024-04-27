@@ -10,6 +10,13 @@ on:
       - synchronize
 
 jobs:
+  setup:
+    outputs:
+      branch: ${{ GITHUB.REF.NAME }}
+  use-variable:
+    needs: setup
+    steps:
+      - run: echo "The value of MY_VARIABLE is ${{ needs.setup.outputs.branch }}"
   tests:
     runs-on: ubuntu-latest
     steps:
