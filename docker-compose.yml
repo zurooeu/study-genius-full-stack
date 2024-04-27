@@ -1,8 +1,6 @@
 services:
   proxy:
     image: nginx:latest
-    ports:
-      - "80:80"
     volumes:
       - ./nginx/certs/:/etc/nginx/ssl
       - ./nginx/conf/:/etc/nginx/conf.d
