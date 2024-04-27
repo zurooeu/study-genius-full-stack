@@ -26,25 +26,25 @@ You need to do these next steps only once.
 * Create a remote directory to store your Traefik Docker Compose file:
 
 ```bash
-mkdir -p /root/code/traefik-public/
+mkdir -p /root/code/npm-nw/
 ```
 
 Copy the Traefik Docker Compose file to your server. You could do it by running the command `rsync` in your local terminal:
 
 ```bash
-rsync -a docker-compose.traefik.yml root@your-server.example.com:/root/code/traefik-public/
+rsync -a docker-compose.traefik.yml root@your-server.example.com:/root/code/npm-nw/
 ```
 
 ### Traefik Public Network
 
-This Traefik will expect a Docker "public network" named `traefik-public` to communicate with your stack(s).
+This Traefik will expect a Docker "public network" named `npm-nw` to communicate with your stack(s).
 
 This way, there will be a single public Traefik proxy that handles the communication (HTTP and HTTPS) with the outside world, and then behind that, you could have one or more stacks with different domains, even if they are on the same single server.
 
-To create a Docker "public network" named `traefik-public` run the following command in your remote server:
+To create a Docker "public network" named `npm-nw` run the following command in your remote server:
 
 ```bash
-docker network create traefik-public
+docker network create npm-nw
 ```
 
 ### Traefik Environment Variables
@@ -94,7 +94,7 @@ export EMAIL=admin@example.com
 Go to the directory where you copied the Traefik Docker Compose file in your remote server:
 
 ```bash
-cd /root/code/traefik-public/
+cd /root/code/npm-nw/
 ```
 
 Now with the environment variables set and the `docker-compose.traefik.yml` in place, you can start the Traefik Docker Compose running the following command:
