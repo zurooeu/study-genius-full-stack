@@ -21,7 +21,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: setup
     steps:
-      - run: echo "The value of MY_VARIABLE is ${{ needs.setup.outputs.branch }}"
+      - run: echo "The value of MY_VARIABLE is ${{ needs.setup.outputs }}"
   tests:
     runs-on: ubuntu-latest
     steps:
