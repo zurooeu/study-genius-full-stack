@@ -2,15 +2,13 @@ name: Deploy to Staging
 
 on:
   workflow_run:
-    workflows: [ Publish docker images ]
+    workflows: [ Test ]
     types: [ completed ]
 
 jobs:
-  deploy:
-    if: ${{ github.ref == 'refs/heads/master' }}
-    runs-on:
-      - self-hosted
-      - staging
+  build:
+    if: ${{ GITHUB.REF.NAME == 'master' }}
+    runs-on: ubuntu-latest
     env:
       ENVIRONMENT: staging
       DOMAIN: ${{ vars.DOMAIN_STAGING }}
@@ -25,12 +23,32 @@ jobs:
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
     steps:
+      - uses: actions/checkout@v4
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Get commit SHA
+        id: commit_sha
+        run: echo "::set-output name=COMMIT_SHA::$(git rev-parse --short HEAD)"
+
+      - name: Build Docker images for stg
+        run: docker-compose -f docker-compose.yml --project-name ${{ secrets.STACK_NAME_STAGING }} build
+
+      - name: Push Docker images for stg
+        run: docker-compose -f docker-compose.yml --project-name ${{ secrets.STACK_NAME_STAGING }} push
+
+  deploy:
+    if: ${{ GITHUB.REF.NAME == 'master' }}
+    runs-on:
+      - self-hosted
+      - staging
+
+    steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - run: echo $PWD
-      - run: cp .env ~
-      - run: printenv | sort
-      - run: cat .env
       - run: docker-compose -f docker-compose.yml --project-name ${{ secrets.STACK_NAME_STAGING }} down
-      - run: docker-compose -f docker-compose.yml --project-name ${{ secrets.STACK_NAME_STAGING }} pull
       - run: docker-compose -f docker-compose.yml --project-name ${{ secrets.STACK_NAME_STAGING }} up -d
