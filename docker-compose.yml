@@ -1,4 +1,15 @@
 services:
+  proxy:
+    image: nginx:latest
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/certs/:/etc/nginx/ssl
+      - ./nginx/conf/:/etc/nginx/conf.d
+    depends_on:
+      - frontend
+      - backend
+
   db:
     image: postgres:12
     restart: always
