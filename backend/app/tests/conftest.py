@@ -4,10 +4,11 @@ import pytest
 from fastapi.testclient import TestClient
 from sqlmodel import Session, delete
 
+from app import crud
 from app.core.config import settings
 from app.core.db import engine, init_db
 from app.main import app
-from app.models import Item, User
+from app.models import CnvMessage, Conversation, Item, User
 from app.tests.utils.user import authentication_token_from_email
 from app.tests.utils.utils import get_superuser_token_headers
 
@@ -17,6 +18,10 @@ def db() -> Generator[Session, None, None]:
     with Session(engine) as session:
         init_db(session)
         yield session
+        statement = delete(CnvMessage)
+        session.execute(statement)
+        statement = delete(Conversation)
+        session.execute(statement)
         statement = delete(Item)
         session.execute(statement)
         statement = delete(User)
@@ -40,3 +45,8 @@ def normal_user_token_headers(client: TestClient, db: Session) -> dict[str, str]
     return authentication_token_from_email(
         client=client, email=settings.EMAIL_TEST_USER, db=db
     )
+
+
+@pytest.fixture(scope="module")
+def current_user(db: Session) -> User | None:
+    return crud.get_user_by_email(session=db, email=settings.EMAIL_TEST_USER)

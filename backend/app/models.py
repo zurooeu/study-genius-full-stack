@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from sqlmodel import Field, Relationship, SQLModel
 
 
@@ -45,6 +47,8 @@ class User(UserBase, table=True):
     id: int | None = Field(default=None, primary_key=True)
     hashed_password: str
     items: list["Item"] = Relationship(back_populates="owner")
+    user_conversations: list["Conversation"] = Relationship(back_populates="owner")
+    user_messages: list["CnvMessage"] = Relationship(back_populates="owner")
 
 
 # Properties to return via API, id is always required
@@ -111,3 +115,73 @@ class TokenPayload(SQLModel):
 class NewPassword(SQLModel):
     token: str
     new_password: str
+
+
+# Shared properties
+class ConversationBase(SQLModel):
+    id: int | None = None
+
+
+# Database model, database table inferred from class name
+class Conversation(ConversationBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    summary: str | None = None
+    created_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
+    modified_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
+    messages: list["CnvMessage"] = Relationship(back_populates="conversation")
+    owner_id: int = Field(foreign_key="user.id", nullable=False)
+    owner: User = Relationship(back_populates="user_conversations")
+
+
+class ConversationPublic(ConversationBase):
+    id: int
+    summary: str | None = None
+    created_at: str
+    modified_at: str
+
+
+class ConversationDetailPublic(ConversationPublic):
+    messages: list["CnvMessagePublic"]
+
+
+class ConversationsPublic(SQLModel):
+    data: list[ConversationPublic]
+    count: int
+
+
+class CnvMessageBase(SQLModel):
+    content: str
+
+
+class CnvMessageUserCreate(CnvMessageBase):
+    role: str = "user"
+
+
+class CnvMessageAssistantCreate(CnvMessageBase):
+    role: str = "assistant"
+
+
+class CnvMessageSystemCreate(CnvMessageBase):
+    role: str = "system"
+
+
+class CnvMessagePublic(CnvMessageBase):
+    id: int
+    role: str
+    created_at: str
+
+
+class CnvMessage(CnvMessageBase, table=True):
+    id: int | None = Field(default=None, primary_key=True)
+    created_at: str = Field(default_factory=lambda: datetime.utcnow().isoformat())
+    role: str
+    content: str
+    conversation_id: int = Field(foreign_key="conversation.id", nullable=False)
+    conversation: Conversation = Relationship(back_populates="messages")
+    owner_id: int = Field(foreign_key="user.id", nullable=False)
+    owner: User = Relationship(back_populates="user_messages")
+
+
+class ChatPublic(SQLModel):
+    conversation_id: int
+    content: str
