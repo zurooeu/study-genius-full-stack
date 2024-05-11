@@ -3,7 +3,17 @@ from typing import Any
 from sqlmodel import Session, select
 
 from app.core.security import get_password_hash, verify_password
-from app.models import Item, ItemCreate, User, UserCreate, UserUpdate
+from app.models import (
+    CnvMessage,
+    CnvMessageBase,
+    Conversation,
+    ConversationBase,
+    Item,
+    ItemCreate,
+    User,
+    UserCreate,
+    UserUpdate,
+)
 
 
 def create_user(*, session: Session, user_create: UserCreate) -> User:
@@ -33,6 +43,8 @@ def update_user(*, session: Session, db_user: User, user_in: UserUpdate) -> Any:
 def get_user_by_email(*, session: Session, email: str) -> User | None:
     statement = select(User).where(User.email == email)
     session_user = session.exec(statement).first()
+    if not session_user:
+        return None
     return session_user
 
 
@@ -51,3 +63,27 @@ def create_item(*, session: Session, item_in: ItemCreate, owner_id: int) -> Item
     session.commit()
     session.refresh(db_item)
     return db_item
+
+
+def create_conversation(
+    *, session: Session, conversation_in: ConversationBase, owner_id: int
+) -> Conversation:
+    conversation = Conversation.model_validate(
+        conversation_in, update={"owner_id": owner_id}
+    )
+    session.add(conversation)
+    session.commit()
+    session.refresh(conversation)
+    return conversation
+
+
+def create_cnvmessage(
+    *, session: Session, cnv_in: CnvMessageBase, owner_id: int, conv_id: int
+) -> CnvMessage:
+    cnv_message = CnvMessage.model_validate(
+        cnv_in, update={"owner_id": owner_id, "conversation_id": conv_id}
+    )
+    session.add(cnv_message)
+    session.commit()
+    session.refresh(cnv_message)
+    return cnv_message
