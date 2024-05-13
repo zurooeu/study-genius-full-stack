@@ -40,6 +40,126 @@ export const $Body_login_login_access_token = {
 	},
 } as const;
 
+export const $ChatPublic = {
+	properties: {
+		conversation_id: {
+	type: 'number',
+	isRequired: true,
+},
+		content: {
+	type: 'string',
+	isRequired: true,
+},
+	},
+} as const;
+
+export const $CnvMessagePublic = {
+	properties: {
+		content: {
+	type: 'string',
+	isRequired: true,
+},
+		id: {
+	type: 'number',
+	isRequired: true,
+},
+		role: {
+	type: 'string',
+	isRequired: true,
+},
+		created_at: {
+	type: 'string',
+	isRequired: true,
+},
+	},
+} as const;
+
+export const $CnvMessageUserCreate = {
+	properties: {
+		content: {
+	type: 'string',
+	isRequired: true,
+},
+		role: {
+	type: 'string',
+	default: 'user',
+},
+	},
+} as const;
+
+export const $ConversationDetailPublic = {
+	properties: {
+		id: {
+	type: 'number',
+	isRequired: true,
+},
+		summary: {
+	type: 'any-of',
+	contains: [{
+	type: 'string',
+}, {
+	type: 'null',
+}],
+},
+		created_at: {
+	type: 'string',
+	isRequired: true,
+},
+		modified_at: {
+	type: 'string',
+	isRequired: true,
+},
+		messages: {
+	type: 'array',
+	contains: {
+		type: 'CnvMessagePublic',
+	},
+	isRequired: true,
+},
+	},
+} as const;
+
+export const $ConversationPublic = {
+	properties: {
+		id: {
+	type: 'number',
+	isRequired: true,
+},
+		summary: {
+	type: 'any-of',
+	contains: [{
+	type: 'string',
+}, {
+	type: 'null',
+}],
+},
+		created_at: {
+	type: 'string',
+	isRequired: true,
+},
+		modified_at: {
+	type: 'string',
+	isRequired: true,
+},
+	},
+} as const;
+
+export const $ConversationsPublic = {
+	properties: {
+		data: {
+	type: 'array',
+	contains: {
+		type: 'ConversationPublic',
+	},
+	isRequired: true,
+},
+		count: {
+	type: 'number',
+	isRequired: true,
+},
+	},
+} as const;
+
 export const $HTTPValidationError = {
 	properties: {
 		detail: {

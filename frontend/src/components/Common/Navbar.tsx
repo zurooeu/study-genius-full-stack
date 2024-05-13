@@ -1,5 +1,5 @@
-import { Button, Flex, Icon, useDisclosure } from "@chakra-ui/react"
-import { FaPlus } from "react-icons/fa"
+import {Button, Flex, Icon, useDisclosure} from "@chakra-ui/react"
+import {FaPlus} from "react-icons/fa"
 
 import AddUser from "../Admin/AddUser"
 import AddItem from "../Items/AddItem"
@@ -22,6 +22,7 @@ const Navbar = ({ type }: NavbarProps) => {
                     </InputLeftElement>
                     <Input type='text' placeholder='Search' fontSize={{ base: 'sm', md: 'inherit' }} borderRadius='8px' />
                 </InputGroup> */}
+        { type !== "Conversation" &&
         <Button
           variant="primary"
           gap={1}
@@ -30,6 +31,7 @@ const Navbar = ({ type }: NavbarProps) => {
         >
           <Icon as={FaPlus} /> Add {type}
         </Button>
+        }
         <AddUser isOpen={addUserModal.isOpen} onClose={addUserModal.onClose} />
         <AddItem isOpen={addItemModal.isOpen} onClose={addItemModal.onClose} />
       </Flex>
