@@ -1,0 +1,19 @@
+meta {
+  name: Test Token
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://{{host}}/api/v1/login/test-token
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {"username": "admin@example.com", "password": "changethis"}
+}
