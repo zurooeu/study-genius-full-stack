@@ -1,0 +1,15 @@
+meta {
+  name: Read Conversation
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://{{host}}/api/v1/conversations/{id}
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
