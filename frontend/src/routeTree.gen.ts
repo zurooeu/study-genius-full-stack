@@ -10,15 +10,15 @@
 
 // Import Routes
 
-import {Route as rootRoute} from './routes/__root'
-import {Route as ResetPasswordImport} from './routes/reset-password'
-import {Route as RecoverPasswordImport} from './routes/recover-password'
-import {Route as LoginImport} from './routes/login'
-import {Route as LayoutImport} from './routes/_layout'
-import {Route as LayoutIndexImport} from './routes/_layout/index'
-import {Route as LayoutSettingsImport} from './routes/_layout/settings'
-import {Route as LayoutConversationsImport} from './routes/_layout/conversations'
-import {Route as LayoutAdminImport} from './routes/_layout/admin'
+import { Route as rootRoute } from './routes/__root'
+import { Route as ResetPasswordImport } from './routes/reset-password'
+import { Route as RecoverPasswordImport } from './routes/recover-password'
+import { Route as LoginImport } from './routes/login'
+import { Route as LayoutImport } from './routes/_layout'
+import { Route as LayoutIndexImport } from './routes/_layout/index'
+import { Route as LayoutSettingsImport } from './routes/_layout/settings'
+import { Route as LayoutConversationsImport } from './routes/_layout/conversations'
+import { Route as LayoutAdminImport } from './routes/_layout/admin'
 
 // Create/Update Routes
 
@@ -49,11 +49,6 @@ const LayoutIndexRoute = LayoutIndexImport.update({
 
 const LayoutSettingsRoute = LayoutSettingsImport.update({
   path: '/settings',
-  getParentRoute: () => LayoutRoute,
-} as any)
-
-const LayoutItemsRoute = LayoutItemsImport.update({
-  path: '/items',
   getParentRoute: () => LayoutRoute,
 } as any)
 
@@ -112,7 +107,6 @@ export const routeTree = rootRoute.addChildren([
   LayoutRoute.addChildren([
     LayoutAdminRoute,
     LayoutConversationsRoute,
-    LayoutItemsRoute,
     LayoutSettingsRoute,
     LayoutIndexRoute,
   ]),

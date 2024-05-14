@@ -185,3 +185,5 @@ class CnvMessage(CnvMessageBase, table=True):
 class ChatPublic(SQLModel):
     conversation_id: int
     content: str
+    question_id: int
+    answer_id: int

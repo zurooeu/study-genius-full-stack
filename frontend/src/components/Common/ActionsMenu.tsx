@@ -5,6 +5,7 @@ import {FiEdit, FiTrash} from "react-icons/fi"
 import type {ConversationPublic, UserPublic} from "../../client"
 import EditUser from "../Admin/EditUser"
 import Delete from "./DeleteAlert"
+import {useNavigate} from "@tanstack/react-router";
 
 interface ActionsMenuProps {
   type: string
@@ -13,6 +14,7 @@ interface ActionsMenuProps {
 }
 
 const ActionsMenu = ({ type, value, disabled }: ActionsMenuProps) => {
+  const navigate = useNavigate()
   const editUserModal = useDisclosure()
   const deleteModal = useDisclosure()
 
@@ -26,6 +28,14 @@ const ActionsMenu = ({ type, value, disabled }: ActionsMenuProps) => {
           variant="unstyled"
         />
         <MenuList>
+          { type === "Conversation" &&
+          <MenuItem
+            onClick={() => navigate({ to: '/', search: { conversation_id: value.id }})}
+            icon={<FiEdit fontSize="16px" />}
+          >
+            Continue {type}
+          </MenuItem>
+          }
           { type === "User" &&
           <MenuItem
             onClick={editUserModal.onOpen}
