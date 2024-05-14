@@ -36,7 +36,7 @@ def chat_new_conversation(
     )
     if not conversation or not conversation.id:
         raise HTTPException(status_code=404, detail="Conversation not found")
-    crud.create_cnvmessage(
+    question = crud.create_cnvmessage(
         session=session,
         cnv_in=chat_in,
         owner_id=current_user.id,
@@ -46,7 +46,10 @@ def chat_new_conversation(
         session=session, owner_id=current_user.id, conv_id=conversation.id
     )
     return ChatPublic(
-        conversation_id=conversation.id, content=assistant_message.content
+        conversation_id=conversation.id,
+        content=assistant_message.content,
+        question_id=question.id,
+        answer_id=assistant_message.id,
     )
 
 
@@ -71,7 +74,7 @@ def chat_continue_conversation(
         raise HTTPException(
             status_code=403, detail="You are not allowed to perform this action"
         )
-    crud.create_cnvmessage(
+    question = crud.create_cnvmessage(
         session=session,
         cnv_in=chat_in,
         owner_id=current_user.id,
@@ -81,5 +84,8 @@ def chat_continue_conversation(
         session=session, owner_id=current_user.id, conv_id=conversation.id
     )
     return ChatPublic(
-        conversation_id=conversation.id, content=assistant_message.content
+        conversation_id=conversation.id,
+        content=assistant_message.content,
+        question_id=question.id,
+        answer_id=assistant_message.id,
     )

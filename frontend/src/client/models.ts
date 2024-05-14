@@ -12,6 +12,8 @@ export type Body_login_login_access_token = {
 export type ChatPublic = {
 	conversation_id: number;
 	content: string;
+	question_id: number;
+	answer_id: number;
 };
 
 
@@ -30,6 +32,11 @@ export type CnvMessageUserCreate = {
 	role?: string;
 };
 
+export type CnvMessageUserCreateFront = {
+	content: string;
+	role?: string;
+	id: number;
+};
 
 
 export type ConversationDetailPublic = {
