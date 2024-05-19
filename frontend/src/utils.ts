@@ -40,3 +40,20 @@ export const confirmPasswordRules = (
 
   return rules;
 }
+
+export const convertDateToHumanReadable = ( apiDate: string ) => {
+  const date = new Date(apiDate);
+
+  // Example of formatting to a nice human-readable format
+  const readableDate = date.toLocaleString('en-US', {
+    weekday: 'long', // "Monday"
+    year: 'numeric', // "2024"
+    month: 'long', // "May"
+    day: 'numeric', // "12"
+    hour: 'numeric', // "7"
+    minute: 'numeric', // "18"
+    second: 'numeric', // "11"
+  });
+
+  return readableDate
+}

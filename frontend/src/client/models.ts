@@ -9,6 +9,62 @@ export type Body_login_login_access_token = {
 
 
 
+export type ChatPublic = {
+	conversation_id: number;
+	content: string;
+	question_id: number;
+	answer_id: number;
+};
+
+
+
+export type CnvMessagePublic = {
+	content: string;
+	id: number;
+	role: string;
+	created_at: string;
+};
+
+
+
+export type CnvMessageUserCreate = {
+	content: string;
+	role?: string;
+};
+
+export type CnvMessageUserCreateFront = {
+	content: string;
+	role?: string;
+	id: number;
+};
+
+
+export type ConversationDetailPublic = {
+	id: number;
+	summary?: string | null;
+	created_at: string;
+	modified_at: string;
+	messages: Array<CnvMessagePublic>;
+};
+
+
+
+export type ConversationPublic = {
+	id: number;
+	summary?: string | null;
+	created_at: string;
+	modified_at: string;
+};
+
+
+
+export type ConversationsPublic = {
+	data: Array<ConversationPublic>;
+	count: number;
+};
+
+
+
 export type HTTPValidationError = {
 	detail?: Array<ValidationError>;
 };

@@ -1,0 +1,22 @@
+meta {
+  name: Create Item
+  type: http
+  seq: 2
+}
+
+post {
+  url: http://{{host}}/api/v1/items/
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "title": "",
+    "description": ""
+  }
+}

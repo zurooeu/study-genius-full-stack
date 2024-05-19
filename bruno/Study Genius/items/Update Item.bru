@@ -1,0 +1,22 @@
+meta {
+  name: Update Item
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://{{host}}/api/v1/items/{id}
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{access_token}}
+}
+
+body:json {
+  {
+    "title": "",
+    "description": ""
+  }
+}
