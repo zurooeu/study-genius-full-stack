@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Genius</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            margin: 0;
+            padding: 20px;
+        }
+        .hero-section {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            margin: 20px 0;
+        }
+        .hero-section img {
+            width: 80px;
+            margin-bottom: 20px;
+        }
+        .hero-section h1 {
+            font-size: 24px;
+            color: #333;
+            margin: 10px 0;
+        }
+        .hero-section h2 {
+            font-size: 36px;
+            color: #000;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .hero-section p {
+            color: #888;
+            margin: 20px 0;
+        }
+        .email-signup {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+        }
+        .email-signup input[type="email"] {
+            padding: 10px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 300px;
+            margin-right: 10px;
+        }
+        .email-signup button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: white;
+            transition: background-color 0.3s;
+        }
+        .email-signup button:hover {
+            background-color: #555;
+        }
+        .features {
+            display: flex;
+            justify-content: space-around;
+            text-align: center;
+            margin: 20px 0;
+            width: 100%;
+            max-width: 800px;
+        }
+        .feature {
+            padding: 20px;
+        }
+        .feature img {
+            width: 50px;
+            margin-bottom: 10px;
+        }
+        .feature h3 {
+            font-size: 18px;
+            color: #333;
+        }
+        .feature p {
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+<div class="hero-section">
+    <img src="logo.png" alt="Study Genius Logo">
+    <h1>Study Genius</h1>
+    <h2>Study Genius – AI nauczyciel</h2>
+    <p>Nauka może być cool i Study Genius pomoże Ci to odkryć</p>
+    <div class="email-signup">
+        <button onclick="redirectToUrl()">Dołącz do Waitlisty</button>
+    </div>
+</div>
+<div class="features">
+    <div class="feature">
+        <img src="brain.png" alt="Technologia">
+        <h3>Technologia</h3>
+        <p>Rozwój technologii AI w znakomity sposób może zmienić współczesny proces uczenia</p>
+    </div>
+    <div class="feature">
+        <img src="book.png" alt="Wiedza">
+        <h3>Wiedza</h3>
+        <p>Naszym celem jest dostosowywać treści nauczania do poziomu ucznia i bazować na określonych materiałach.</p>
+    </div>
+    <div class="feature">
+        <img src="clown.png" alt="Zabawa">
+        <h3>Zabawa</h3>
+        <p>Najlepiej się uczymy w przyjaznym i zaangażowanym środowisku</p>
+    </div>
+</div>
+<script>
+  function redirectToUrl() {
+    const url = "https://forms.gle/7KBaidEs5VoKKePp7";
+    window.location.href = url;
+  }
+</script>
+</body>
+</html>
