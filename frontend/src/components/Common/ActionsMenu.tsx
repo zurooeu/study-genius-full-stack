@@ -1,20 +1,26 @@
-import {Button, Menu, MenuButton, MenuItem, MenuList, useDisclosure,} from "@chakra-ui/react"
-import {BsThreeDotsVertical} from "react-icons/bs"
-import {FiEdit, FiTrash} from "react-icons/fi"
+import {
+  Button,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+  useDisclosure,
+} from "@chakra-ui/react"
+import { BsThreeDotsVertical } from "react-icons/bs"
+import { FiEdit, FiTrash } from "react-icons/fi"
 
-import type {ConversationPublic, UserPublic} from "../../client"
+import type { ItemPublic, UserPublic } from "../../client"
 import EditUser from "../Admin/EditUser"
+import EditItem from "../Items/EditItem"
 import Delete from "./DeleteAlert"
-import {useNavigate} from "@tanstack/react-router";
 
 interface ActionsMenuProps {
   type: string
-  value: ConversationPublic | UserPublic
+  value: ItemPublic | UserPublic
   disabled?: boolean
 }
 
 const ActionsMenu = ({ type, value, disabled }: ActionsMenuProps) => {
-  const navigate = useNavigate()
   const editUserModal = useDisclosure()
   const deleteModal = useDisclosure()
 
@@ -28,22 +34,12 @@ const ActionsMenu = ({ type, value, disabled }: ActionsMenuProps) => {
           variant="unstyled"
         />
         <MenuList>
-          { type === "Conversation" &&
-          <MenuItem
-            onClick={() => navigate({ to: '/', search: { conversation_id: value.id }})}
-            icon={<FiEdit fontSize="16px" />}
-          >
-            Continue {type}
-          </MenuItem>
-          }
-          { type === "User" &&
           <MenuItem
             onClick={editUserModal.onOpen}
             icon={<FiEdit fontSize="16px" />}
           >
             Edit {type}
           </MenuItem>
-          }
           <MenuItem
             onClick={deleteModal.onOpen}
             icon={<FiTrash fontSize="16px" />}
@@ -52,9 +48,15 @@ const ActionsMenu = ({ type, value, disabled }: ActionsMenuProps) => {
             Delete {type}
           </MenuItem>
         </MenuList>
-        {type === "User" && (
+        {type === "User" ? (
           <EditUser
             user={value as UserPublic}
+            isOpen={editUserModal.isOpen}
+            onClose={editUserModal.onClose}
+          />
+        ) : (
+          <EditItem
+            item={value as ItemPublic}
             isOpen={editUserModal.isOpen}
             onClose={editUserModal.onClose}
           />

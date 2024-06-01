@@ -52,9 +52,7 @@ def read_conversation(session: SessionDep, current_user: CurrentUser, id: int) -
 
 
 @router.delete("/{id}")
-def delete_conversation(
-    session: SessionDep, current_user: CurrentUser, id: int
-) -> Message:
+def delete_item(session: SessionDep, current_user: CurrentUser, id: int) -> Message:
     """
     Delete a conversation.
     """
@@ -63,8 +61,6 @@ def delete_conversation(
         raise HTTPException(status_code=404, detail="Conversation not found")
     if conversation.owner_id != current_user.id:
         raise HTTPException(status_code=403, detail="Not enough permissions")
-    for message in conversation.messages:
-        session.delete(message)
     session.delete(conversation)
     session.commit()
     return Message(message="Conversation deleted successfully")

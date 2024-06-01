@@ -7,11 +7,11 @@ import {
   AlertDialogOverlay,
   Button,
 } from "@chakra-ui/react"
-import {useMutation, useQueryClient} from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import React from "react"
-import {useForm} from "react-hook-form"
+import { useForm } from "react-hook-form"
 
-import {ConversationsService, ItemsService, UsersService} from "../../client"
+import { ItemsService, UsersService } from "../../client"
 import useCustomToast from "../../hooks/useCustomToast"
 
 interface DeleteProps {
@@ -34,9 +34,7 @@ const Delete = ({ type, id, isOpen, onClose }: DeleteProps) => {
     if (type === "Item") {
       await ItemsService.deleteItem({ id: id })
     } else if (type === "User") {
-      await UsersService.deleteUser({userId: id})
-    } else if (type === "Conversation") {
-      await ConversationsService.deleteConversation({ id: id })
+      await UsersService.deleteUser({ userId: id })
     } else {
       throw new Error(`Unexpected type: ${type}`)
     }

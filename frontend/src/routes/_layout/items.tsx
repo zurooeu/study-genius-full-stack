@@ -1,50 +1,61 @@
-import {Container, Flex, Heading, Skeleton, Table, TableContainer, Tbody, Td, Th, Thead, Tr,} from "@chakra-ui/react"
-import {useSuspenseQuery} from "@tanstack/react-query"
-import {createFileRoute} from "@tanstack/react-router"
+import {
+  Container,
+  Flex,
+  Heading,
+  Skeleton,
+  Table,
+  TableContainer,
+  Tbody,
+  Td,
+  Th,
+  Thead,
+  Tr,
+} from "@chakra-ui/react"
+import { useSuspenseQuery } from "@tanstack/react-query"
+import { createFileRoute } from "@tanstack/react-router"
 
-import {Suspense} from "react"
-import {ErrorBoundary} from "react-error-boundary"
-import {ConversationsService} from "../../client"
+import { Suspense } from "react"
+import { ErrorBoundary } from "react-error-boundary"
+import { ItemsService } from "../../client"
 import ActionsMenu from "../../components/Common/ActionsMenu"
 import Navbar from "../../components/Common/Navbar"
-import {convertDateToHumanReadable} from "../../utils.ts";
 
-export const Route = createFileRoute("/_layout/conversations")({
-  component: Conversations,
+export const Route = createFileRoute("/_layout/items")({
+  component: Items,
 })
 
-function ConversationsTableBody() {
-  const { data: conversations } = useSuspenseQuery({
-    queryKey: ["conversations"],
-    queryFn: () => ConversationsService.readConversations({}),
+function ItemsTableBody() {
+  const { data: items } = useSuspenseQuery({
+    queryKey: ["items"],
+    queryFn: () => ItemsService.readItems({}),
   })
 
   return (
     <Tbody>
-      {conversations.data.map((conversation) => (
-        <Tr key={conversation.id}>
-          <Td color={!conversation.summary ? "ui.dim" : "inherit"}>
-            {conversation.summary || "N/A"}
+      {items.data.map((item) => (
+        <Tr key={item.id}>
+          <Td>{item.id}</Td>
+          <Td>{item.title}</Td>
+          <Td color={!item.description ? "ui.dim" : "inherit"}>
+            {item.description || "N/A"}
           </Td>
-          <Td>{convertDateToHumanReadable(conversation.created_at)}</Td>
-          <Td>{convertDateToHumanReadable(conversation.modified_at)}</Td>
           <Td>
-            <ActionsMenu type={"Conversation"} value={conversation} />
+            <ActionsMenu type={"Item"} value={item} />
           </Td>
         </Tr>
       ))}
     </Tbody>
   )
 }
-function ConversationsTable() {
+function ItemsTable() {
   return (
     <TableContainer>
       <Table size={{ base: "sm", md: "md" }}>
         <Thead>
           <Tr>
-            <Th>Summary</Th>
-            <Th>Created at</Th>
-            <Th>Modified at</Th>
+            <Th>ID</Th>
+            <Th>Title</Th>
+            <Th>Description</Th>
             <Th>Actions</Th>
           </Tr>
         </Thead>
@@ -74,7 +85,7 @@ function ConversationsTable() {
               </Tbody>
             }
           >
-            <ConversationsTableBody />
+            <ItemsTableBody />
           </Suspense>
         </ErrorBoundary>
       </Table>
@@ -82,15 +93,15 @@ function ConversationsTable() {
   )
 }
 
-function Conversations() {
+function Items() {
   return (
     <Container maxW="full">
       <Heading size="lg" textAlign={{ base: "center", md: "left" }} pt={12}>
-        Lessons Management
+        Items Management
       </Heading>
 
-      <Navbar type={"Conversation"} />
-      <ConversationsTable />
+      <Navbar type={"Item"} />
+      <ItemsTable />
     </Container>
   )
 }

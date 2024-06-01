@@ -1,9 +1,0 @@
-{
-  "version": "1",
-  "name": "Study Genius",
-  "type": "collection",
-  "ignore": [
-    "node_modules",
-    ".git"
-  ]
-}

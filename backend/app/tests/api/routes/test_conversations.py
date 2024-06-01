@@ -4,6 +4,7 @@ from sqlmodel import Session
 from app.core.config import settings
 from app.models import User
 from app.tests.utils.conversation import (
+    create_random_conversation,
     create_random_conversation_with_random_messages,
 )
 
@@ -50,7 +51,7 @@ def test_read_conversation_not_found(
 def test_read_conversation_not_enough_permissions(
     client: TestClient, normal_user_token_headers: dict[str, str], db: Session
 ) -> None:
-    conversation = create_random_conversation_with_random_messages(db)
+    conversation = create_random_conversation(db)
     response = client.get(
         f"{settings.API_V1_STR}/conversations/{conversation.id}",
         headers=normal_user_token_headers,
@@ -66,8 +67,8 @@ def test_read_conversations(
     db: Session,
     current_user: User,
 ) -> None:
-    create_random_conversation_with_random_messages(db, current_user)
-    create_random_conversation_with_random_messages(db, current_user)
+    create_random_conversation(db, current_user)
+    create_random_conversation(db, current_user)
     response = client.get(
         f"{settings.API_V1_STR}/conversations/",
         headers=normal_user_token_headers,
@@ -83,7 +84,7 @@ def test_delete_conversation(
     db: Session,
     current_user: User,
 ) -> None:
-    conversation = create_random_conversation_with_random_messages(db, current_user)
+    conversation = create_random_conversation(db, current_user)
     response = client.delete(
         f"{settings.API_V1_STR}/conversations/{conversation.id}",
         headers=normal_user_token_headers,
@@ -108,7 +109,7 @@ def test_delete_conversation_not_found(
 def test_delete_conversation_not_enough_permissions(
     client: TestClient, normal_user_token_headers: dict[str, str], db: Session
 ) -> None:
-    conversation = create_random_conversation_with_random_messages(db)
+    conversation = create_random_conversation(db)
     response = client.delete(
         f"{settings.API_V1_STR}/conversations/{conversation.id}",
         headers=normal_user_token_headers,
