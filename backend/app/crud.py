@@ -79,7 +79,7 @@ def create_conversation(
 
 
 def update_conversation(
-        *, session: Session, conversation_in: ConversationUpdate
+    *, session: Session, conversation_in: ConversationUpdate
 ) -> Conversation | None:
     statement = select(Conversation).where(Conversation.id == conversation_in.id)
     session_conversation = session.exec(statement).first()
