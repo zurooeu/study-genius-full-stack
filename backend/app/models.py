@@ -122,6 +122,10 @@ class ConversationBase(SQLModel):
     id: int | None = None
 
 
+class ConversationUpdate(ConversationBase):
+    summary: str
+
+
 # Database model, database table inferred from class name
 class Conversation(ConversationBase, table=True):
     id: int | None = Field(default=None, primary_key=True)

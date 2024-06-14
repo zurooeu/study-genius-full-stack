@@ -48,6 +48,7 @@ def read_conversation(session: SessionDep, current_user: CurrentUser, id: int) -
         raise HTTPException(status_code=404, detail="Conversation not found")
     if conversation.owner_id != current_user.id:
         raise HTTPException(status_code=403, detail="Not enough permissions")
+    conversation.messages.sort(key=lambda message: message.created_at)
     return conversation
 
 
