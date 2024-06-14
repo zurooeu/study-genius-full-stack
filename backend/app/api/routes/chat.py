@@ -11,6 +11,7 @@ from app.models import (
     CnvMessageUserCreate,
     Conversation,
     ConversationBase,
+    ConversationUpdate,
 )
 
 router = APIRouter()
@@ -45,9 +46,15 @@ def chat_new_conversation(
     assistant_message = assistant.generate_answer(
         session=session, owner_id=current_user.id, conv_id=conversation.id
     )
+    summary = assistant.generate_summary(session=session, conv_id=conversation.id)
+    crud.update_conversation(
+        session=session,
+        conversation_in=ConversationUpdate(id=conversation.id, summary=summary)
+    )
     return ChatPublic(
         conversation_id=conversation.id,
         content=assistant_message.content,
+        summary=summary,
         question_id=question.id,
         answer_id=assistant_message.id,
     )

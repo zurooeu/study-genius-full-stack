@@ -8,6 +8,7 @@ from app.models import (
     CnvMessageBase,
     Conversation,
     ConversationBase,
+    ConversationUpdate,
     Item,
     ItemCreate,
     User,
@@ -75,6 +76,20 @@ def create_conversation(
     session.commit()
     session.refresh(conversation)
     return conversation
+
+
+def update_conversation(
+        *, session: Session, conversation_in: ConversationUpdate
+) -> Conversation | None:
+    statement = select(Conversation).where(Conversation.id == conversation_in.id)
+    session_conversation = session.exec(statement).first()
+    if not session_conversation:
+        return None
+    if conversation_in.summary is not None:
+        session_conversation.summary = conversation_in.summary
+    session.commit()
+    session.refresh(session_conversation)
+    return session_conversation
 
 
 def create_cnvmessage(
