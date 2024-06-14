@@ -49,7 +49,7 @@ def chat_new_conversation(
     summary = assistant.generate_summary(session=session, conv_id=conversation.id)
     crud.update_conversation(
         session=session,
-        conversation_in=ConversationUpdate(id=conversation.id, summary=summary)
+        conversation_in=ConversationUpdate(id=conversation.id, summary=summary),
     )
     return ChatPublic(
         conversation_id=conversation.id,
