@@ -97,7 +97,7 @@ class Settings(BaseSettings):
     USERS_OPEN_REGISTRATION: bool = False
 
     AI_MOCK_REST_CALLS: bool = True
-    OPEN_API_KEY: str
+    OPEN_API_KEY: str | None = None
 
     def _check_default_secret(self, var_name: str, value: str | None) -> None:
         if value == "changethis":
