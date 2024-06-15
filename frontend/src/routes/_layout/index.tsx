@@ -1,8 +1,8 @@
-import {Button, Flex, Icon, Input, Text, useColorModeValue} from "@chakra-ui/react"
+import {Button, Flex, Icon, Text, Textarea, useColorModeValue} from "@chakra-ui/react"
 import {useMutation, useQueryClient} from "@tanstack/react-query"
 import {createFileRoute, SearchSchemaInput} from "@tanstack/react-router"
 import {ChatService, CnvMessageUserCreateFront, ConversationsService} from "../../client";
-import React, {RefObject, useRef, useState} from "react";
+import React, {RefObject, useEffect, useRef, useState} from "react";
 import {MdAutoAwesome, MdPerson} from "react-icons/md";
 import {z} from "zod";
 
@@ -87,26 +87,74 @@ function ChatMessage(props: { message: CnvMessageUserCreateFront, key?: number }
 
 }
 interface ChatInputProps {
-    handleTranslate: React.MouseEventHandler<HTMLButtonElement>; // Adjust the parameter and return type as needed
+    handleTranslate: (inputText: string) => void; // Adjust the parameter and return type as needed
     handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void; // Adjust the parameter type as needed
     endOfPageRef: React.RefObject<HTMLButtonElement>; // Adjust the type if it's a different kind of ref
     loading: boolean;
 }
 
 const ChatInput: React.FC<ChatInputProps> = ({handleTranslate, handleChange, endOfPageRef, loading}) => {
-  const borderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
-  const inputColor = useColorModeValue('navy.700', 'white');
-  const placeholderColor = useColorModeValue(
-      {color: 'gray.500'},
-      {color: 'whiteAlpha.600'},
-  );
+    const [value, setValue] = useState<string>('');
+    const textareaRef = useRef<HTMLTextAreaElement>(null);
+    const borderColor = useColorModeValue('gray.200', 'whiteAlpha.200');
+    const inputColor = useColorModeValue('navy.700', 'white');
+    const placeholderColor = useColorModeValue(
+        {color: 'gray.500'},
+        {color: 'whiteAlpha.600'},
+    );
+    const handleResize = () => {
+        const textarea = textareaRef.current;
+        if (textarea) {
+            textarea.style.height = 'auto';
+            textarea.style.height = textarea.scrollHeight + 'px';
+        }
+
+    };
+    useEffect(() => {
+        const textarea = textareaRef.current;
+        if (textarea) {
+            handleResize();
+        }
+    }, [value]);
+    const handleKeyDown = (Event: any) => {
+      if (Event.ctrlKey && Event.key === 'Enter') {
+          return handleOnClick();
+      }
+    };
+    const handleInputChange = (Event: any) => {
+        setValue(Event.target.value);
+        handleChange(Event);
+    }
+
+    const handleOnClick = () => {
+        const maxCodeLength = 700;
+        if (!value) {
+            alert('Please enter your message.');
+            return;
+        }
+        if (value.length > maxCodeLength) {
+            alert(
+                `Please enter code less than ${maxCodeLength} characters. You are currently at ${value.length} characters.`,
+            );
+            return;
+        }
+        handleTranslate(value);
+        setValue('');
+        handleResize();
+    };
+
     return (
         <Flex
             ms={{base: '0px', xl: '60px'}}
             mt="20px"
             justifySelf={'flex-end'}
         >
-            <Input
+            <Textarea
+                value={value}
+                ref={textareaRef}
+                onInput={handleResize}
+                overflow="hidden"
+                resize="none"
                 minH="54px"
                 h="100%"
                 border="1px solid"
@@ -120,7 +168,8 @@ const ChatInput: React.FC<ChatInputProps> = ({handleTranslate, handleChange, end
                 color={inputColor}
                 _placeholder={placeholderColor}
                 placeholder="Type your message here..."
-                onChange={handleChange}
+                onChange={handleInputChange}
+                onKeyDown={handleKeyDown}
             />
             <Button
                 ref={endOfPageRef}
@@ -140,7 +189,7 @@ const ChatInput: React.FC<ChatInputProps> = ({handleTranslate, handleChange, end
                         bg: 'linear-gradient(15.46deg, #4A25E1 26.3%, #7B5AFF 86.4%)',
                     },
                 }}
-                onClick={handleTranslate}
+                onClick={handleOnClick}
                 isLoading={loading ? true : false}
             >
                 Submit
@@ -237,24 +286,12 @@ function Dashboard() {
         },
     })
 
-    const handleTranslate = async () => {
-        // Chat post conditions(maximum number of characters, valid message etc.)
-        const maxCodeLength = 700;
-
-        if (!inputCode) {
-            alert('Please enter your message.');
-            return;
-        }
-
-        if (inputCode.length > maxCodeLength) {
-            alert(
-                `Please enter code less than ${maxCodeLength} characters. You are currently at ${inputCode.length} characters.`,
-            );
-            return;
-        }
+    const handleTranslate = async (textInput: string) => {
+        console.log(textInput);
+        setInputCode(textInput);
         setOutputCode(' ');
         setLoading(true);
-        chatMutation.mutate(inputCode)
+        chatMutation.mutate(inputCode);
     };
 
     if (loadingConversation && conversation_id) {
