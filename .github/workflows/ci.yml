@@ -108,6 +108,9 @@ jobs:
 
   deploy-stg:
     if: github.ref == 'refs/heads/main'
+    environment:
+      name: staging
+      url: https://stg-study-genius.zuroo.eu/
     needs:
       - build-stg
     runs-on:
