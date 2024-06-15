@@ -1,7 +1,7 @@
 import logging
 from typing import Any
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, BackgroundTasks, HTTPException
 
 from app import crud
 from app.ai import assistant
@@ -21,7 +21,10 @@ logger = logging.getLogger(__name__)
 
 @router.post("/", response_model=ChatPublic)
 def chat_new_conversation(
-    session: SessionDep, current_user: CurrentUser, chat_in: CnvMessageUserCreate
+    background_tasks: BackgroundTasks,
+    session: SessionDep,
+    current_user: CurrentUser,
+    chat_in: CnvMessageUserCreate,
 ) -> Any:
     """
     Start a conversation.
@@ -46,15 +49,12 @@ def chat_new_conversation(
     assistant_message = assistant.generate_answer(
         session=session, owner_id=current_user.id, conv_id=conversation.id
     )
-    summary = assistant.generate_summary(session=session, conv_id=conversation.id)
-    crud.update_conversation(
-        session=session,
-        conversation_in=ConversationUpdate(id=conversation.id, summary=summary),
+    background_tasks.add_task(
+        update_conversation_summary, session=session, conv_id=conversation.id
     )
     return ChatPublic(
         conversation_id=conversation.id,
         content=assistant_message.content,
-        summary=summary,
         question_id=question.id,
         answer_id=assistant_message.id,
     )
@@ -90,9 +90,18 @@ def chat_continue_conversation(
     assistant_message = assistant.generate_answer(
         session=session, owner_id=current_user.id, conv_id=conversation.id
     )
+    print(assistant_message.content)
     return ChatPublic(
         conversation_id=conversation.id,
         content=assistant_message.content,
         question_id=question.id,
         answer_id=assistant_message.id,
+    )
+
+
+async def update_conversation_summary(session: SessionDep, conv_id: int) -> None:
+    summary = assistant.generate_summary(session=session, conv_id=conv_id)
+    crud.update_conversation(
+        session=session,
+        conversation_in=ConversationUpdate(id=conv_id, summary=summary),
     )
