@@ -122,3 +122,10 @@ class Settings(BaseSettings):
 
 
 settings = Settings()  # type: ignore
+
+# print settings for local testing
+if settings.ENVIRONMENT == "local":
+    print("=== Debugging environment properties: ===")
+    for key in sorted(settings.__dict__.keys()):
+        print(f"{key}: {settings.__dict__[key]}")
+    print("=========================================")

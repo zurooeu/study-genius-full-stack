@@ -22,7 +22,25 @@ class SystemPrompts:
 
 
 class StaticAnswers:
-    mock_ans: str = "Mock answer"
+    mock_ans: str = """
+Oto prosty przykład użycia list comprehension w Pythonie:
+
+```python
+# Utworzenie listy liczb od 1 do 10
+numbers = [i for i in range(1, 11)]
+print(numbers)
+
+# Utworzenie listy liczb parzystych od 1 do 10
+even_numbers = [i for i in range(1, 11) if i % 2 == 0]
+print(even_numbers)
+
+# Utworzenie listy kwadratów liczb od 1 do 5
+squares = [i**2 for i in range(1, 6)]
+print(squares)
+```
+
+Powyższy kod tworzy trzy różne listy za pomocą list comprehension: listę liczb od 1 do 10, listę liczb parzystych od 1 do 10 oraz listę kwadratów liczb od 1 do 5.
+"""
     mock_summary: str = "Mock summary"
     unsafe_mes: str = "Hola, hola... jestem od tego żeby Ci pomóc się uczyć także zważaj na słowa i na to o co pytasz."
 
