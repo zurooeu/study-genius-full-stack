@@ -127,6 +127,8 @@ jobs:
       POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
       TAG: ${{ github.sha }}
+      AI_MOCK_REST_CALLS: ${{ vars.MOCK_REST_CALLS }}
+      OPEN_API_KEY: ${{ secrets.OPEN_API_KEY }}
     steps:
       - name: Checkout
         uses: actions/checkout@v2
