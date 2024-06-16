@@ -16,11 +16,12 @@ jobs:
       STACK_NAME: ${{ vars.STACK_NAME_STAGING }}
       TAG: ${{ github.sha }}
       AI_MOCK_REST_CALLS: ${{ vars.MOCK_REST_CALLS_STAGING }}
+      OPEN_API_KEY: ${{ secrets.OPEN_API_KEY_STAGING }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Check presence of environment attributes
-        run: echo "AI_MOCK_REST_CALLS - $AI_MOCK_REST_CALLS \n TAG - $TAG \n STACK_NAME_STAGING - $STACK_NAME"
+        run: echo "AI_MOCK_REST_CALLS - $AI_MOCK_REST_CALLS \n TAG - $TAG \n OPEN_API_KEY - $OPEN_API_KEY"
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
