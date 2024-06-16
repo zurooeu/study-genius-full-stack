@@ -5,6 +5,7 @@ import {ChatService, CnvMessageUserCreateFront, ConversationsService} from "../.
 import React, {RefObject, useEffect, useRef, useState} from "react";
 import {MdAutoAwesome, MdPerson} from "react-icons/md";
 import {z} from "zod";
+import ReactMarkdown from "react-markdown";
 
 export const Route = createFileRoute("/_layout/")({
     component: Dashboard,
@@ -78,7 +79,9 @@ function ChatMessage(props: { message: CnvMessageUserCreateFront, key?: number }
                     fontSize={{base: 'sm', md: 'md'}}
                     lineHeight={{base: '24px', md: '26px'}}
                 >
-                    {message.content}
+                    <ReactMarkdown>
+                        {message.content}
+                    </ReactMarkdown>
                 </Text>
             </Flex>
 
