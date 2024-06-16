@@ -106,7 +106,7 @@ jobs:
         id: commit_sha
         run: echo "::set-output name=COMMIT_SHA::$(git rev-parse --short HEAD)"
       - name: Check presence of environment attributes
-        run: echo "AI_MOCK_REST_CALLS - $AI_MOCK_REST_CALLS \n "TAG - $TAG"
+        run: echo "AI_MOCK_REST_CALLS - $AI_MOCK_REST_CALLS \n TAG - $TAG \n STACK_NAME_STAGING - $STACK_NAME"
       - name: Build Docker images for stg
         run: docker-compose -f docker-compose.yml --project-name ${{ secrets.STACK_NAME_STAGING }} build
       - name: Push Docker images for stg
