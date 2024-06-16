@@ -34,6 +34,10 @@ const MembersTableBody = () => {
     queryFn: () => UsersService.readUsers({}),
   })
 
+  const handleDelete = async () => {
+    console.log("deleted")
+  };
+
   return (
     <Tbody>
       {users.data.map((user) => (
@@ -65,6 +69,7 @@ const MembersTableBody = () => {
               type="User"
               value={user}
               disabled={currentUser?.id === user.id ? true : false}
+              onDeleteSuccess={handleDelete}
             />
           </Td>
         </Tr>

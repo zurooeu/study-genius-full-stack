@@ -150,6 +150,7 @@ const ChatInput: React.FC<ChatInputProps> = ({handleTranslate, handleChange, end
             justifySelf={'flex-end'}
         >
             <Textarea
+                id="chatInputTextArea"
                 value={value}
                 ref={textareaRef}
                 onInput={handleResize}
