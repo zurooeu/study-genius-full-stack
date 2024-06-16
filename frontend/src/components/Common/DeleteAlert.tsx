@@ -19,9 +19,10 @@ interface DeleteProps {
   id: number
   isOpen: boolean
   onClose: () => void
+  onDeleteSuccess: () => void
 }
 
-const Delete = ({ type, id, isOpen, onClose }: DeleteProps) => {
+const Delete = ({ type, id, isOpen, onClose, onDeleteSuccess }: DeleteProps) => {
   const queryClient = useQueryClient()
   const showToast = useCustomToast()
   const cancelRef = React.useRef<HTMLButtonElement | null>(null)
@@ -37,6 +38,7 @@ const Delete = ({ type, id, isOpen, onClose }: DeleteProps) => {
       await UsersService.deleteUser({userId: id})
     } else if (type === "Conversation") {
       await ConversationsService.deleteConversation({ id: id })
+          .then(() => onDeleteSuccess())
     } else {
       throw new Error(`Unexpected type: ${type}`)
     }

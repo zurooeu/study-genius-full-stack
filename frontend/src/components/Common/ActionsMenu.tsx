@@ -11,9 +11,10 @@ interface ActionsMenuProps {
   type: string
   value: ConversationPublic | UserPublic
   disabled?: boolean
+  onDeleteSuccess: () => void
 }
 
-const ActionsMenu = ({ type, value, disabled }: ActionsMenuProps) => {
+const ActionsMenu = ({ type, value, disabled, onDeleteSuccess }: ActionsMenuProps) => {
   const navigate = useNavigate()
   const editUserModal = useDisclosure()
   const deleteModal = useDisclosure()
@@ -64,6 +65,7 @@ const ActionsMenu = ({ type, value, disabled }: ActionsMenuProps) => {
           id={value.id}
           isOpen={deleteModal.isOpen}
           onClose={deleteModal.onClose}
+          onDeleteSuccess={onDeleteSuccess}
         />
       </Menu>
     </>
